@@ -10,6 +10,7 @@ import SwiftUI
 
 struct WelcomePage: View {
     @State private var start: Bool = false
+    @EnvironmentObject var login: Login
     var body: some View {
         ZStack {
             LinearGradient(gradient: Gradient(colors: [.blue, .purple]), startPoint: .topLeading, endPoint: .bottomTrailing)
@@ -24,7 +25,7 @@ struct WelcomePage: View {
                 
                 Text("Unlock Your Potential")
                     .font(.title)
-                    .fontWeight(.bold)
+                    .bold()
                 
                 
                 Text("Tired of unfulfilled resolutions?\nWant to finally reach your goals?\nGoal App is here to help!")
@@ -35,7 +36,7 @@ struct WelcomePage: View {
                 VStack(alignment: .leading) {
                     Text("With Goal, you can:")
                         .font(.body)
-                        .fontWeight(.bold)
+                        .bold()
                         .padding(.top, 30)
                     
                     Text("- Easily set and track your goals")
@@ -46,6 +47,7 @@ struct WelcomePage: View {
                 
                 Button(action: {
                     start = true
+                    login.page+=1
                 }) {
                     Text("Get Started")
                         .font(.headline)

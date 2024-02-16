@@ -7,6 +7,7 @@ struct MyApp: App {
         WindowGroup {
             ContentView()
                 .modelContainer(for: UserData.self)
+                .environmentObject(Login())
         }
     }
 }

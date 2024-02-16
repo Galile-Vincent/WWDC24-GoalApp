@@ -1,8 +1,12 @@
 //
-//  File.swift
-//  
+//  Temperary.swift
+//
 //
 //  Created by Vincent Chiang on 2024/2/16.
 //
 
-import Foundation
+import SwiftUI
+
+class Login: ObservableObject{
+    @Published var page = 0
+}
