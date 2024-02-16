@@ -14,6 +14,8 @@ struct UserInfo: View {
     @EnvironmentObject var login: Login
     @FocusState var isInputActive: Bool
     @State var username: String = ""
+    @State var quote: String = ""
+    var quotes = [String]()
     var body: some View {
         VStack {
             VStack(alignment: .leading) {
@@ -22,24 +24,42 @@ struct UserInfo: View {
                     .bold()
                 TextField("Name", text: $username)
                     .textFieldStyle(CustomTextFieldStyle())
-                    .focused($isInputActive)
-                    .toolbar {
-                        ToolbarItemGroup(placement: .keyboard) {
-                            Spacer()
-                            
-                            Button("Done") {
-                                isInputActive = false
-                            }
+                
+                Text("What's your Favorite Quotes?")
+                    .font(.title)
+                    .bold()
+                List{
+                    TextField("Quote", text: $quote)
+                    ForEach(quotes, id: \.self){quote in
+                        Text(quote)
+                    }
+                    Button(action:{
+                        quotes.append(quote) // Use self to refer to the struct's properties
+                        quote = "" // Resetting the quote variable to an empty string after appending
+                    }){
+                        Text("+ Add new")
+                    }
+
+                }
+                .focused($isInputActive)
+                .toolbar {
+                    ToolbarItemGroup(placement: .keyboard) {
+                        Spacer()
+                        
+                        Button("Done") {
+                            isInputActive = false
                         }
                     }
-                    .onTapGesture {
-                        hideKeyboard()
-                    }
+                }
+                .onTapGesture {
+                    hideKeyboard()
+                }
             }
             Spacer()
             ZStack{
                 Button(action: {
                     save()
+                    isOnBoarding = false
                 }){
                     Text("Next")
                         .frame(width: 150, height: 50) // Set the frame to create a square button
@@ -53,7 +73,7 @@ struct UserInfo: View {
         }.padding()
     }
     private func save() {
-        let newUser = UserData(username: username, quotes: [""])
+        let newUser = UserData(username: username, quotes: quotes)
         context.insert(newUser)
     }
 }
