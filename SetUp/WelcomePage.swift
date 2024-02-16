@@ -9,69 +9,52 @@ import SwiftData
 import SwiftUI
 
 struct WelcomePage: View {
+    @State private var start: Bool = false
     var body: some View {
         ZStack {
-            // Background image or gradient
             LinearGradient(gradient: Gradient(colors: [.blue, .purple]), startPoint: .topLeading, endPoint: .bottomTrailing)
                 .ignoresSafeArea()
             VStack {
-                // App logo or icon
-                Image("your_app_logo")
+                
+                Image("icon")
                     .resizable()
-                    .scaledToFit()
+                    .scaledToFill()
                     .frame(width: 150, height: 150)
                     .padding(.bottom, 30)
                 
-                // Headline
-                Text("Unlock Your Potential:")
+                Text("Unlock Your Potential")
                     .font(.title)
                     .fontWeight(.bold)
-                    .foregroundColor(.white)
                 
-                Text("Set and Achieve Your Goals!")
-                    .font(.title2)
-                    .foregroundColor(.white)
-                    .padding(.bottom, 30)
                 
-                // Body text
-                Text("Tired of unfulfilled resolutions? Want to finally reach your goals? [App Name] is here to help!")
+                Text("Tired of unfulfilled resolutions?\nWant to finally reach your goals?\nGoal App is here to help!")
                     .font(.body)
-                    .foregroundColor(.white)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 30)
                 
-                // Benefits
-                Text("With [App Name], you can:")
-                    .font(.body)
-                    .fontWeight(.bold)
-                    .foregroundColor(.white)
-                    .padding(.top, 30)
-                
                 VStack(alignment: .leading) {
+                    Text("With Goal, you can:")
+                        .font(.body)
+                        .fontWeight(.bold)
+                        .padding(.top, 30)
+                    
                     Text("- Easily set and track your goals")
                         .font(.body)
-                        .foregroundColor(.white)
-                    Text("- Create personalized plans and reminders")
+                    Text("- Stay motivated by your favorite quotes")
                         .font(.body)
-                        .foregroundColor(.white)
-                    Text("- Visualize your progress and stay motivated")
-                        .font(.body)
-                        .foregroundColor(.white)
-                }
+                }.padding(.horizontal, 30)
                 
-                // Get Started button
                 Button(action: {
-                    // Handle get started action
+                    start = true
                 }) {
                     Text("Get Started")
                         .font(.headline)
-                        .foregroundColor(.white)
                         .padding()
-                        .background(Color.blue)
+                        .background(.thinMaterial)
                         .cornerRadius(10)
-                }
+                } .sensoryFeedback(.success, trigger: start)
                 .padding(.top, 30)
-            }
+            }.foregroundStyle(.white)
         }
     }
 }

@@ -1,7 +1,12 @@
 import SwiftUI
 
 struct ContentView: View {
+    @AppStorage ("isOnBoarding") var isOnBoarding: Bool = true
     var body: some View {
-        WelcomePage()
+        if isOnBoarding{
+            WelcomePage()
+        }else{
+            
+        }
     }
 }
