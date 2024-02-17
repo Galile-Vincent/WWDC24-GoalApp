@@ -10,13 +10,22 @@ import SwiftData
 @Model
 final class UserData{
     var username: String
-    var quotes: [String]
+    @Relationship(deleteRule: .cascade, inverse: \Quotes.user) var Quote = [Quotes]()
     @Relationship(deleteRule: .cascade, inverse: \GoalData.user) var Goal = [GoalData]()
-    init(username: String, quotes: [String], Goal: [GoalData] = [GoalData]()) {
+    init(username: String, Quote: [Quotes] = [Quotes](), Goal: [GoalData] = [GoalData]()) {
         self.username = username
-        self.quotes = quotes
+        self.Quote = Quote
         self.Goal = Goal
     }
+}
+
+@Model
+final class Quotes{
+    var quote: String
+    init(quote: String) {
+        self.quote = quote
+    }
+    var user: UserData?
 }
 
 @Model
@@ -31,6 +40,7 @@ final class GoalData{
     }
     var user: UserData?
 }
+
 
 @Model
 final class MileStone{
@@ -47,9 +57,9 @@ final class MileStone{
 }
 
 extension MileStone {
-    enum Status: String, CaseIterable, Codable {
-        case notstarted = "Not Started"
-        case inprogress = "In Progress"
-        case done = "Done"
+    enum Status: Int, CaseIterable, Codable {
+        case notstarted = 0
+        case inprogress = 1
+        case done = 2
     }
 }

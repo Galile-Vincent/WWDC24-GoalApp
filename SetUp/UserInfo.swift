@@ -15,7 +15,7 @@ struct UserInfo: View {
     @FocusState var isInputActive: Bool
     @State var username: String = ""
     @State var quote: String = ""
-    var quotes = [String]()
+    @Query var quotes: [Quotes]
     var body: some View {
         VStack {
             VStack(alignment: .leading) {
@@ -28,18 +28,16 @@ struct UserInfo: View {
                 Text("What's your Favorite Quotes?")
                     .font(.title)
                     .bold()
+                TextField("Quote", text: $quote)
+                Button(action:{
+                    savequote()
+                }){
+                    Text("Add new")
+                }
                 List{
-                    TextField("Quote", text: $quote)
-                    ForEach(quotes, id: \.self){quote in
-                        Text(quote)
+                    ForEach(quotes){ quote in
+                        Text(quote.quote)
                     }
-                    Button(action:{
-                        quotes.append(quote) // Use self to refer to the struct's properties
-                        quote = "" // Resetting the quote variable to an empty string after appending
-                    }){
-                        Text("+ Add new")
-                    }
-
                 }
                 .focused($isInputActive)
                 .toolbar {
@@ -58,7 +56,7 @@ struct UserInfo: View {
             Spacer()
             ZStack{
                 Button(action: {
-                    save()
+                    saveuser()
                     isOnBoarding = false
                 }){
                     Text("Next")
@@ -72,8 +70,14 @@ struct UserInfo: View {
             
         }.padding()
     }
-    private func save() {
-        let newUser = UserData(username: username, quotes: quotes)
+    private func saveuser() {
+        let newUser = UserData(username: username, Quote: quotes)
         context.insert(newUser)
     }
+    private func savequote() {
+        let newquote = Quotes(quote: quote)
+        context.insert(newquote)
+        quote = ""
+    }
+
 }

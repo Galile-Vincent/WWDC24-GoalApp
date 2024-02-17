@@ -10,7 +10,7 @@ struct ContentView: View {
                 OnBoardingView()
             }else{
                 if let user = users.first {
-                    HomePage(user: user)
+                    Home(user: user)
                 }else{
                     //error
                 }

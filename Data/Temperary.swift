@@ -9,4 +9,5 @@ import SwiftUI
 
 class Login: ObservableObject{
     @Published var page = 0
+    @Published var status = 0
 }
