@@ -10,7 +10,6 @@ import SwiftData
 
 struct Home: View {
     @State var user: UserData
-    @State private var animateGradient = false
     @State var showedit: Bool = false
     @State var showadd: Bool = false
     var body: some View {
@@ -19,6 +18,7 @@ struct Home: View {
                 ForEach(user.Goal){goal in
                     Section{
                         GoalDescribeGrid(goal: goal)
+                            .foregroundStyle(Color.black)
                             .listRowBackground(Color(white: 1, opacity: 0.3))
                     }
                 }
@@ -26,10 +26,13 @@ struct Home: View {
             Section{
                 HStack{
                     Spacer()
-                    NavigationLink(destination: AddGoal(user: user)){
+                    Button(action:{
+                        showadd = true
+                    }){
                         Image(systemName: "plus.circle.fill")
                             .font(.system(size: 50))
                             .foregroundStyle(Color.orange)
+                        
                     }
                     Spacer()
                 }.background(
@@ -42,13 +45,7 @@ struct Home: View {
         .scrollContentBackground(.hidden)
         .background(
             LinearGradient(colors: [.purple, .yellow], startPoint: .topLeading, endPoint: .bottomTrailing)
-                .hueRotation(.degrees(animateGradient ? 45 : 0))
                 .ignoresSafeArea(.all)
-                .onAppear {
-                    withAnimation(.easeInOut(duration: 5.0).repeatForever(autoreverses: true)) {
-                        animateGradient.toggle()
-                    }
-                }
         )
         .toolbar{
             ToolbarItem(placement: .navigationBarTrailing) {
@@ -56,16 +53,11 @@ struct Home: View {
                     showedit.toggle()
                 }
             }
-            ToolbarItem(placement: .navigationBarLeading) {
-                Button("Add") {
-                    showadd.toggle()
-                }
-            }
         }
-        .navigationTitle("\(user.username)'s Goal")
+        .navigationTitle("Goal")
         
         .sheet(isPresented: $showadd) {
-            //MiddleGoals(goal: GoalData)
+            AddGoal(user: user)
         }
         .sheet(isPresented: $showedit) {
             //EditView(user: user)

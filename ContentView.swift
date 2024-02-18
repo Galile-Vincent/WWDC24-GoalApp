@@ -4,15 +4,30 @@ import SwiftData
 struct ContentView: View {
     @AppStorage ("isOnBoarding") var isOnBoarding: Bool = true
     @Query var users: [UserData]
+    @State var showsplash: Bool = true
     var body: some View {
         NavigationStack{
-            if isOnBoarding{
-                OnBoardingView()
-            }else{
-                if let user = users.first {
-                    Home(user: user)
+            ZStack{
+                if isOnBoarding{
+                    OnBoardingView()
                 }else{
-                    //error
+                    if showsplash{
+                        SplashScreen()
+                            .transition(.opacity)
+                            .animation(.easeOut(duration: 1.5))
+                    }else{
+                        if let user = users.first {
+                            Home(user: user)
+                        }else{
+                            //error
+                        }
+                    }
+                }
+            }.onAppear {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                    withAnimation {
+                        self.showsplash = false
+                    }
                 }
             }
         }

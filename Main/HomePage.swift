@@ -14,7 +14,6 @@ struct GoalPage: View {
     @Environment(\.dismiss) private var dismiss
     //@Query var goals: [GoalData]
     @State var goal: GoalData
-    @State private var animateGradient = false
     @State var showedit: Bool = false
     @State var showadd: Bool = false
     @State var steps: String = ""
@@ -22,11 +21,13 @@ struct GoalPage: View {
         List{
             Section{
                 GoalDescribe(goal: goal)
+                    .foregroundStyle(Color.black)
                     .listRowBackground(Color(white: 1, opacity: 0.3))
             }
             Section{
                 if login.status == 0{
                     AllMSList(goal: goal)
+                        .foregroundStyle(Color.black)
                         .listRowBackground(Color(white: 1, opacity: 0.3))
                 }
                 else if goal.milestone.filter({ $0.status?.rawValue ?? 10 == login.status-1 }).isEmpty{
@@ -65,13 +66,7 @@ struct GoalPage: View {
         .scrollContentBackground(.hidden)
         .background(
             LinearGradient(colors: [.purple, .yellow], startPoint: .topLeading, endPoint: .bottomTrailing)
-                .hueRotation(.degrees(animateGradient ? 45 : 0))
                 .ignoresSafeArea(.all)
-                .onAppear {
-                    withAnimation(.easeInOut(duration: 5.0).repeatForever(autoreverses: true)) {
-                        animateGradient.toggle()
-                    }
-                }
         )
         .toolbar{
             ToolbarItem(placement: .navigationBarTrailing) {
@@ -79,13 +74,8 @@ struct GoalPage: View {
                     showedit.toggle()
                 }
             }
-            ToolbarItem(placement: .navigationBarLeading) {
-                Button("Add") {
-                    showadd.toggle()
-                }
-            }
         }
-        .navigationTitle("\(goal.user!.username)'s Goal")
+        //.navigationTitle("\(goal.user!.username)'s Goal")
         .sheet(isPresented: $showadd) {
             //MiddleGoals(goal: GoalData)
         }
