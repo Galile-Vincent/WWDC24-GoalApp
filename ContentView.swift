@@ -5,7 +5,7 @@ struct ContentView: View {
     @AppStorage ("isOnBoarding") var isOnBoarding: Bool = true
     @Query var users: [UserData]
     var body: some View {
-        NavigationView{
+        NavigationStack{
             if isOnBoarding{
                 OnBoardingView()
             }else{

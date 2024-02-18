@@ -12,7 +12,6 @@ struct AddGoal: View {
     @State var user: UserData
     @State var goal: String = ""
     @State var goal_describe: String = ""
-    @State private var animateGradient = false
     var body: some View {
         ZStack{
             List{
@@ -50,19 +49,6 @@ struct AddGoal: View {
                 Text("Add")
             }
         }
-        .scrollContentBackground(.hidden)
-        .background(
-            LinearGradient(colors: [.purple, .yellow], startPoint: .topLeading, endPoint: .bottomTrailing)
-                .hueRotation(.degrees(animateGradient ? 45 : 0))
-                .ignoresSafeArea(.all)
-                .onAppear {
-                    withAnimation(.easeInOut(duration: 5.0).repeatForever(autoreverses: true)) {
-                        animateGradient.toggle()
-                    }
-                }
-        )
-        
-        
     }
     func save(){
         let newgoal = GoalData(goal: goal, goal_describe: goal_describe)
@@ -71,3 +57,4 @@ struct AddGoal: View {
         goal_describe = ""
     }
 }
+

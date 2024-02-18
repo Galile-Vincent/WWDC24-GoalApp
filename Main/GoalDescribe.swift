@@ -8,7 +8,6 @@
 import SwiftUI
 import SwiftData
 
-@available(iOS 17.0, *)
 struct GoalDescribe: View {
     @State var goal: GoalData
     var body: some View {
@@ -21,14 +20,14 @@ struct GoalDescribe: View {
             }
             Divider()
             Text(goal.goal_describe)
-
+            
             Spacer()
         }
         .padding(10)
         .frame(minHeight: 150)
         //.background(.ultraThinMaterial)
         //.cornerRadius(10)
-
+        
     }
 }
 

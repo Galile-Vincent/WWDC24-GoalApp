@@ -8,13 +8,15 @@
 import SwiftUI
 import SwiftData
 
-struct HomePage: View {
+struct GoalPage: View {
     @EnvironmentObject var login: Login
     @Environment(\.modelContext) private var context
     @Environment(\.dismiss) private var dismiss
     //@Query var goals: [GoalData]
     @State var goal: GoalData
     @State private var animateGradient = false
+    @State var showedit: Bool = false
+    @State var showadd: Bool = false
     @State var steps: String = ""
     var body: some View {
         List{
@@ -71,6 +73,25 @@ struct HomePage: View {
                     }
                 }
         )
+        .toolbar{
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button("Edit") {
+                    showedit.toggle()
+                }
+            }
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button("Add") {
+                    showadd.toggle()
+                }
+            }
+        }
+        .navigationTitle("\(goal.user!.username)'s Goal")
+        .sheet(isPresented: $showadd) {
+            //MiddleGoals(goal: GoalData)
+        }
+        .sheet(isPresented: $showedit) {
+            //EditView(user: user)
+        }
     }
 }
 /*
@@ -84,40 +105,3 @@ struct HomePage: View {
      login.page = 0
  }
  */
-
-
-struct Home: View {
-    @State var user: UserData
-    @State var showedit: Bool = false
-    @State var showadd: Bool = false
-    var body: some View {
-        VStack{
-            if user.Goal.isEmpty{
-                AddGoal(user: user)
-            }else{
-                if let firstUser = user.Goal.first {
-                    HomePage(goal: firstUser)
-                }
-            }
-        }
-        .toolbar{
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Button("Edit") {
-                    showedit.toggle()
-                }
-            }
-            ToolbarItem(placement: .navigationBarLeading) {
-                Button("Add") {
-                    showadd.toggle()
-                }
-            }
-        }
-        .navigationTitle("\(user.username)'s Goal \(user.Goal.count)")
-        .sheet(isPresented: $showadd) {
-            //MiddleGoals(goal: GoalData)
-        }
-        .sheet(isPresented: $showedit) {
-            //EditView(user: user)
-        }
-    }
-}
