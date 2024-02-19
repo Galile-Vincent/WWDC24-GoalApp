@@ -35,7 +35,6 @@ struct AddGoal: View {
                         }
                         .padding(10)
                         .frame(minHeight: 150)
-                        .listRowBackground(Color(white: 1, opacity: 0.3))
                     }
                     Section{
                         //add middlegoal
@@ -55,18 +54,13 @@ struct AddGoal: View {
                 }
             }
             .foregroundStyle(Color.black)
-            .scrollContentBackground(.hidden)
-            .background(
-                LinearGradient(colors: [.purple, .yellow], startPoint: .topLeading, endPoint: .bottomTrailing)
-                    .ignoresSafeArea(.all)
-            )
             .toolbar{
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action:{
                         save()
                         dismiss()
                     }){
-                        Text("Save")
+                        Text("Done")
                     }
                 }
             }

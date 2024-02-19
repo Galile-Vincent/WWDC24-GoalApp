@@ -15,6 +15,7 @@ struct UserInfo: View {
     @FocusState var isInputActive: Bool
     @State var username: String = ""
     @State var quote: String = ""
+    @State var NotCompleted: Bool = false
     @Query var quotes: [Quotes]
     var body: some View {
         VStack {
@@ -22,8 +23,24 @@ struct UserInfo: View {
                 Text("What's your Name?")
                     .font(.title)
                     .bold()
-                TextField("Name", text: $username)
-                    .textFieldStyle(CustomTextFieldStyle())
+                VStack(alignment: .leading){
+                    TextField("Name", text: $username)
+                        .textFieldStyle(CustomTextFieldStyle())
+                    if NotCompleted{
+                        HStack{
+                            Image(systemName: "exclamationmark.circle.fill")
+                            Text("Please Enter Your Name")
+                        }.font(.subheadline)
+                            .padding(.horizontal)
+                            .foregroundStyle(.red)
+                    }else{
+                        Text("P")
+                            .font(.subheadline)
+                            .padding(.horizontal)
+                            .foregroundStyle(.white)
+                    }
+                }.padding(.bottom,5)
+                
                 
                 Text("What's your Favorite Quotes?")
                     .font(.title)
@@ -56,8 +73,12 @@ struct UserInfo: View {
             Spacer()
             ZStack{
                 Button(action: {
-                    saveuser()
-                    isOnBoarding = false
+                    if !username.isEmpty{
+                        saveuser()
+                        isOnBoarding = false
+                    }else{
+                        NotCompleted = true
+                    }
                 }){
                     Text("Next")
                         .frame(width: 150, height: 50) // Set the frame to create a square button

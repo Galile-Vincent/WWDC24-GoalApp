@@ -11,17 +11,34 @@ import SwiftData
 struct GoalDescribe: View {
     @State var goal: GoalData
     var body: some View {
+        let milestones = goal.milestone
+        let totalMilestones = milestones.count
+        let notStartedMilestones = milestones.filter { $0.status == .notstarted }.count
+        let inProgressMilestones = milestones.filter { $0.status == .inprogress }.count
+        let completedMilestones = milestones.filter { $0.status == .done }.count
+        
         VStack(alignment: .leading){
-            HStack{
-                Text(goal.goal)
-                    .font(.title2)
-                    .bold()
-                Spacer()
+            Text("Detail:")
+                .bold()
+            if goal.goal_describe.isEmpty{
+                Text("Add detail of your goal in edit.")
+            }else{
+                Text(goal.goal_describe)
             }
             Divider()
-            Text(goal.goal_describe)
-            
-            Spacer()
+                .padding(.bottom)
+            HStack{
+                VStack(alignment: .leading){
+                    CircularProgressView(goal: goal, circleframe: 100)
+                }
+                Divider()
+                    .padding()
+                VStack(alignment: .leading){
+                    Text("Total: \(totalMilestones)")
+                    Text("Not Started: \(notStartedMilestones)")
+                    Text("In Progress: \(inProgressMilestones)")
+                }
+            }
         }
         .padding(10)
         .frame(minHeight: 150)

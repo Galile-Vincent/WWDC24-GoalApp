@@ -31,6 +31,7 @@ struct AllMSList: View {
     @Environment(\.modelContext) private var context
     @Environment(\.dismiss) private var dismiss
     @State var goal: GoalData
+    @State var miles: String = ""
     var body: some View {
         ForEach(goal.milestone) { ms in
             ListRow(ms: ms)

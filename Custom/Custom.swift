@@ -14,7 +14,7 @@ struct CustomTextFieldStyle: TextFieldStyle {
         .background(
             RoundedRectangle(cornerRadius: 20, style: .continuous)
                 .stroke(Color.black, lineWidth: 3)
-        ).padding()
+        ).padding(.horizontal)
     }
 }
 
@@ -22,5 +22,32 @@ extension View {
     func hideKeyboard() {
         let resign = #selector(UIResponder.resignFirstResponder)
         UIApplication.shared.sendAction(resign, to: nil, from: nil, for: nil)
+    }
+}
+
+struct TextColor_BW: ViewModifier {
+    @Environment(\.colorScheme) var colorScheme
+    func body(content: Content) -> some View {
+        content
+            .foregroundStyle(colorScheme == .dark ? .white : .white)
+    }
+}
+
+struct BackgroundColor_BW: ViewModifier {
+    @Environment(\.colorScheme) var colorScheme
+    func body(content: Content) -> some View {
+        content
+            .background(colorScheme == .dark ? .white : .white)
+    }
+}
+
+extension View {
+    func WB() -> Color{
+        @Environment(\.colorScheme) var colorScheme
+        if colorScheme == .dark {
+            return .white
+        }else{
+            return .black
+        }
     }
 }

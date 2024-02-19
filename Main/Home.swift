@@ -10,18 +10,26 @@ import SwiftData
 
 struct Home: View {
     @State var user: UserData
-    @State var showedit: Bool = false
     @State var showadd: Bool = false
     var body: some View {
         ZStack(alignment: .bottom){
-            List{
-                ForEach(user.Goal){goal in
-                    Section{
-                        GoalDescribeGrid(goal: goal)
-                            .foregroundStyle(Color.black)
-                            .listRowBackground(Color(white: 1, opacity: 0.3))
+            if user.Goal.isEmpty{
+                HomePageEmpty()
+            }else{
+                List {
+                    ForEach(user.Goal.indices, id: \.self) { index in
+                        Section {
+                            GoalDescribeGrid(goal: user.Goal[index])
+                                .foregroundStyle(Color.black)
+                                .listRowBackground(Color(white: 1, opacity: 0.3))
+                        }
+                    }
+                    .onDelete { indexSet in
+                        // Perform delete operation here
+                        user.Goal.remove(atOffsets: indexSet)
                     }
                 }
+
             }
             Section{
                 HStack{
@@ -30,7 +38,7 @@ struct Home: View {
                         showadd = true
                     }){
                         Image(systemName: "plus.circle.fill")
-                            .font(.system(size: 50))
+                            .font(.system(size: 70))
                             .foregroundStyle(Color.orange)
                         
                     }
@@ -47,20 +55,10 @@ struct Home: View {
             LinearGradient(colors: [.purple, .yellow], startPoint: .topLeading, endPoint: .bottomTrailing)
                 .ignoresSafeArea(.all)
         )
-        .toolbar{
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Button("Edit") {
-                    showedit.toggle()
-                }
-            }
-        }
         .navigationTitle("Goal")
         
         .sheet(isPresented: $showadd) {
             AddGoal(user: user)
-        }
-        .sheet(isPresented: $showedit) {
-            //EditView(user: user)
         }
         
     }

@@ -17,6 +17,7 @@ struct GoalPage: View {
     @State var showedit: Bool = false
     @State var showadd: Bool = false
     @State var steps: String = ""
+    @State private var refreshFlag = UUID()
     var body: some View {
         List{
             Section{
@@ -44,7 +45,7 @@ struct GoalPage: View {
                 }
             }header:{
                 HStack{
-                    Text("Middle Goal")
+                    Text("Short-term Goal")
                         .font(.headline)
                     Spacer()
                     
@@ -75,13 +76,23 @@ struct GoalPage: View {
                 }
             }
         }
+        .navigationTitle(goal.goal)
         //.navigationTitle("\(goal.user!.username)'s Goal")
         .sheet(isPresented: $showadd) {
             //MiddleGoals(goal: GoalData)
         }
         .sheet(isPresented: $showedit) {
-            //EditView(user: user)
+            GoalEdit(goal: goal, onDelete: onDeleteGoal)
+                .onDisappear(perform: refresh)
         }
+    }
+    func onDeleteGoal() {
+        // Navigate back to the home page
+        dismiss()
+    }
+    func refresh() {
+        // Change the state variable to trigger refresh
+        refreshFlag = UUID()
     }
 }
 /*
