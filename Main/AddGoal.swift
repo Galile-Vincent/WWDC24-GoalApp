@@ -15,7 +15,10 @@ struct AddGoal: View {
     @State var goal_describe: String = ""
     @State var showedit: Bool = false
     @State var showadd: Bool = false
-
+    @State var shownotice: Bool = false
+    var notUnique: Bool {
+        user.Goal.contains(where: { $0.goal == goal })
+    }
     var body: some View {
         NavigationView {
             ZStack{
@@ -45,33 +48,32 @@ struct AddGoal: View {
                             .font(.headline)
                     }
                 }
-                Button(action: {
-                    withAnimation{
-                        save()
-                    }
-                }){
-                    Text("Add")
-                }
             }
             .foregroundStyle(Color.black)
             .toolbar{
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action:{
                         save()
-                        dismiss()
                     }){
                         Text("Done")
-                    }
+                    }.disabled(goal.isEmpty)
                 }
-            }
+            }.alert("\(goal) already existed", isPresented: $shownotice){
+                Button("OK", role: .cancel) {}
+                }
         }
     }
 
     func save(){
-        let newgoal = GoalData(goal: goal, goal_describe: goal_describe)
-        user.Goal.append(newgoal)
-        goal = ""
-        goal_describe = ""
+        if notUnique{
+            shownotice = true
+        }else{
+            let newgoal = GoalData(goal: goal, goal_describe: goal_describe)
+            user.Goal.append(newgoal)
+            goal = ""
+            goal_describe = ""
+            dismiss()
+        }
     }
 }
 

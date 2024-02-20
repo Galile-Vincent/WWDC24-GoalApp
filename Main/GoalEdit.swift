@@ -33,7 +33,7 @@ struct GoalEdit: View {
                         HStack{
                             Spacer()
                             Text("Delete")
-                                .foregroundColor(.red)
+                                .foregroundColor(.white)
                             Spacer()
                         }.padding(.horizontal, 3)
                     }.confirmationDialog("You cannot undo this action", isPresented: $isDeleting, titleVisibility: .visible){

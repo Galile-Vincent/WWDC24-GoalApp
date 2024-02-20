@@ -10,14 +10,12 @@ import SwiftData
 
 struct GoalPage: View {
     @EnvironmentObject var login: Login
-    @Environment(\.modelContext) private var context
     @Environment(\.dismiss) private var dismiss
     //@Query var goals: [GoalData]
     @State var goal: GoalData
     @State var showedit: Bool = false
     @State var showadd: Bool = false
     @State var steps: String = ""
-    @State private var refreshFlag = UUID()
     var body: some View {
         List{
             Section{
@@ -83,16 +81,11 @@ struct GoalPage: View {
         }
         .sheet(isPresented: $showedit) {
             GoalEdit(goal: goal, onDelete: onDeleteGoal)
-                .onDisappear(perform: refresh)
         }
     }
     func onDeleteGoal() {
         // Navigate back to the home page
         dismiss()
-    }
-    func refresh() {
-        // Change the state variable to trigger refresh
-        refreshFlag = UUID()
     }
 }
 /*

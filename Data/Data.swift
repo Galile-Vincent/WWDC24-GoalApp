@@ -6,7 +6,7 @@
 //
 
 import SwiftData
-
+import Foundation
 @Model
 final class UserData{
     var username: String
@@ -30,10 +30,12 @@ final class Quotes{
 
 @Model
 final class GoalData{
+    let id: UUID 
     var goal: String
     var goal_describe: String
     @Relationship(deleteRule: .cascade, inverse: \MileStone.goal) var milestone = [MileStone]()
     init(goal: String, goal_describe: String, milestone: [MileStone] = [MileStone]()) {
+        self.id = UUID()
         self.goal = goal
         self.goal_describe = goal_describe
         self.milestone = milestone

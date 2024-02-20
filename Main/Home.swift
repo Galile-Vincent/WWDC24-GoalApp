@@ -11,6 +11,7 @@ import SwiftData
 struct Home: View {
     @State var user: UserData
     @State var showadd: Bool = false
+    @State private var refreshFlag = UUID()
     var body: some View {
         ZStack(alignment: .bottom){
             if user.Goal.isEmpty{
@@ -28,8 +29,9 @@ struct Home: View {
                         // Perform delete operation here
                         user.Goal.remove(atOffsets: indexSet)
                     }
+                    .id(refreshFlag)
                 }
-
+                
             }
             Section{
                 HStack{
