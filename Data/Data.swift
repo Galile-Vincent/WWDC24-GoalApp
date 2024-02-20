@@ -48,20 +48,12 @@ final class GoalData{
 final class MileStone{
     var name: String
     var detail: String
-    var status: Status?
-    init(name: String, detail: String, status: Status? = nil) {
+    var status: Int
+    init(name: String, detail: String, status: Int) {
         self.name = name
         self.detail = detail
         self.status = status
     }
     var goal: GoalData?
     
-}
-
-extension MileStone {
-    enum Status: Int, CaseIterable, Codable {
-        case notstarted = 0
-        case inprogress = 1
-        case done = 2
-    }
 }

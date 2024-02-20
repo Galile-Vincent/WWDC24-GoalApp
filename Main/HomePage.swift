@@ -17,71 +17,122 @@ struct GoalPage: View {
     @State var showadd: Bool = false
     @State var steps: String = ""
     var body: some View {
-        List{
-            Section{
-                GoalDescribe(goal: goal)
-                    .foregroundStyle(Color.black)
-                    .listRowBackground(Color(white: 1, opacity: 0.3))
-            }
-            Section{
-                if login.status == 0{
-                    AllMSList(goal: goal)
+        NavigationStack{
+            List{
+                Section{
+                    GoalDescribe(goal: goal)
                         .foregroundStyle(Color.black)
                         .listRowBackground(Color(white: 1, opacity: 0.3))
                 }
-                else if goal.milestone.filter({ $0.status?.rawValue ?? 10 == login.status-1 }).isEmpty{
-                    ContentUnavailableView {
-                        Text("Currently Empty")
+                Section{
+                    if login.status == 0{
+                        AllMSList(goal: goal)
+                            .foregroundStyle(Color.black)
+                            .listRowBackground(Color(white: 1, opacity: 0.3))
+                    }
+                    else if goal.milestone.filter({$0.status == login.status - 1}).isEmpty{
+                        ContentUnavailableView {
+                            Text("Currently Empty")
+                                .bold()
+                                .foregroundStyle(Color.secondary)
+                        }
+                        .listRowBackground(Color(white: 1, opacity: 0))
+                        .padding(.top, 50)
+                    }
+                    else{
+                        HomepageList(goal: goal)
+                            .listRowBackground(Color(white: 1, opacity: 0.3))
+                    }
+                }header:{
+                    HStack{
+                        Text("Short-term Goal")
+                            .font(.headline)
+                        Spacer()
+                        Menu {
+                            Button(action: { login.status = 0 }) {
+                                HStack{
+                                    Text("All")
+                                    Spacer()
+                                    if login.status == 0{
+                                        Image(systemName: "checkmark")
+                                    }
+                                }
+                            }
+                            
+                            Button(action: { login.status = 1 }) {
+                                HStack{
+                                    Text("Not started")
+                                    Spacer()
+                                    if login.status == 1{
+                                        Image(systemName: "checkmark")
+                                    }
+                                }
+                            }
+                            
+                            Button(action: { login.status = 2 }) {
+                                HStack{
+                                    Text("In progress")
+                                    Spacer()
+                                    if login.status == 2{
+                                        Image(systemName: "checkmark")
+                                    }
+                                }
+                            }
+                            
+                            Button(action: { login.status = 3 }) {
+                                HStack{
+                                    Text("Completed")
+                                    Spacer()
+                                    if login.status == 3{
+                                        Image(systemName: "checkmark")
+                                    }
+                                }
+                                
+                            }
+                            
+                        } label: {
+                            Image(systemName: "line.3.horizontal.decrease.circle.fill")
+                                .foregroundStyle(.white.opacity(0.6))
+                                .font(.title3)
+                        }.padding(.bottom,5)
+                    }
+                }
+            }
+            .scrollContentBackground(.hidden)
+            .background(
+                LinearGradient(colors: [.purple, .yellow], startPoint: .topLeading, endPoint: .bottomTrailing)
+                    .ignoresSafeArea(.all)
+            )
+            .toolbar{
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Edit") {
+                        showedit.toggle()
+                    }.bold().font(.system(.body, design: .rounded))
+                }
+                ToolbarItemGroup(placement: .bottomBar) {
+                    Button(action: {
+                        showadd.toggle()
+                    }){
+                        HStack{
+                            Image(systemName: "plus.circle.fill")
+                            Text("Add New")
+                                .font(.system(.body, design: .rounded))
+                        }.foregroundStyle(.purple)
                             .bold()
-                            .foregroundStyle(Color.secondary)
                     }
-                    .listRowBackground(Color(white: 1, opacity: 0))
-                }
-                else{
-                    HomepageList(goal: goal)
-                        .listRowBackground(Color(white: 1, opacity: 0.3))
-                }
-            }header:{
-                HStack{
-                    Text("Short-term Goal")
-                        .font(.headline)
                     Spacer()
-                    
-                    Picker("Status", selection: $login.status) {
-                        Text("All")
-                            .tag(0)
-                        Text("Not started")
-                            .tag(1)
-                        Text("Planning")
-                            .tag(2)
-                        Text("In progress")
-                            .tag(3)
-                        Text("Finished")
-                            .tag(4)
-                    }
                 }
             }
-        }
-        .scrollContentBackground(.hidden)
-        .background(
-            LinearGradient(colors: [.purple, .yellow], startPoint: .topLeading, endPoint: .bottomTrailing)
-                .ignoresSafeArea(.all)
-        )
-        .toolbar{
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Button("Edit") {
-                    showedit.toggle()
-                }
+            .navigationTitle(goal.goal)
+            //.navigationTitle("\(goal.user!.username)'s Goal")
+            .sheet(isPresented: $showadd) {
+                AddMS(goal: goal)
+                    .presentationDetents([.medium])
             }
-        }
-        .navigationTitle(goal.goal)
-        //.navigationTitle("\(goal.user!.username)'s Goal")
-        .sheet(isPresented: $showadd) {
-            //MiddleGoals(goal: GoalData)
-        }
-        .sheet(isPresented: $showedit) {
-            GoalEdit(goal: goal, onDelete: onDeleteGoal)
-        }
+            .sheet(isPresented: $showedit) {
+                GoalEdit(goal: goal, onDelete: onDeleteGoal)
+            }
+        }.accentColor(.orange)
     }
     func onDeleteGoal() {
         // Navigate back to the home page

@@ -13,9 +13,9 @@ struct GoalDescribe: View {
     var body: some View {
         let milestones = goal.milestone
         let totalMilestones = milestones.count
-        let notStartedMilestones = milestones.filter { $0.status == .notstarted }.count
-        let inProgressMilestones = milestones.filter { $0.status == .inprogress }.count
-        let completedMilestones = milestones.filter { $0.status == .done }.count
+        let notStartedMilestones = milestones.filter { $0.status == 0 }.count
+        let inProgressMilestones = milestones.filter { $0.status == 1 }.count
+        let completedMilestones = milestones.filter { $0.status == 2 }.count
         
         VStack(alignment: .leading){
             Text("Detail:")

@@ -17,10 +17,11 @@ struct Home: View {
             if user.Goal.isEmpty{
                 HomePageEmpty()
             }else{
+                let goal = user.Goal
                 List {
-                    ForEach(user.Goal.indices, id: \.self) { index in
+                    ForEach(goal) { index in
                         Section {
-                            GoalDescribeGrid(goal: user.Goal[index])
+                            GoalDescribeGrid(goal: index)
                                 .foregroundStyle(Color.black)
                                 .listRowBackground(Color(white: 1, opacity: 0.3))
                         }
@@ -62,7 +63,6 @@ struct Home: View {
         .sheet(isPresented: $showadd) {
             AddGoal(user: user)
         }
-        
     }
 }
 

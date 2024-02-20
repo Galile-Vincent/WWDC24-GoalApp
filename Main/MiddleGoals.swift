@@ -13,7 +13,6 @@ struct MiddleGoals: View {
     @State var goalname: String = ""
     @State var detail: String = ""
     @State var goal: GoalData
-    @State var status = MileStone.Status.notstarted
     var body: some View {
         NavigationView{
             Form {
@@ -31,7 +30,7 @@ struct MiddleGoals: View {
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Save") {
-                        let ml = MileStone(name: goalname, detail: detail, status: status)
+                        let ml = MileStone(name: goalname, detail: detail, status: 0)
                         goal.milestone.append(ml)
                         dismiss()
                     }.disabled(goalname.isEmpty)

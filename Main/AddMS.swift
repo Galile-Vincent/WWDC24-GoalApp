@@ -10,12 +10,42 @@ import SwiftData
 
 struct AddMS: View {
     @State var goal: GoalData
+    @Environment(\.dismiss) private var dismiss
+    @State var name: String = ""
+    @State var detail: String = ""
     var body: some View {
-        Section{
-            ForEach(goal.milestone){ms in
-                MSRow(ms: ms)
+        NavigationView{
+            List{
+                Section{
+                    TextField("Goal Name", text: $name)
+                }
+                Section{
+                    TextField("Detail", text: $detail)
+                }
+            }.toolbar{
+                ToolbarItem(placement: .topBarLeading){
+                    Button(action:{
+                        dismiss()
+                    }){
+                        Text("Cancel")
+                    }
+                }
+                ToolbarItem(placement: .topBarTrailing){
+                    Button(action:{
+                        save()
+                    }){
+                        Text("Save")
+                    }
+                }
             }
         }
+    }
+    func save(){
+        let newms = MileStone(name: name, detail: detail, status: 0)
+        goal.milestone.append(newms)
+        name = ""
+        detail = ""
+        dismiss()
     }
 }
 
@@ -27,8 +57,8 @@ struct MSRow: View {
         HStack{
             Text(ms.name)
             Spacer()
-            Text(type[ms.status?.rawValue ?? 0])
-                .foregroundStyle(color[ms.status?.rawValue ?? 0])
+            Text(type[ms.status])
+                .foregroundStyle(color[ms.status])
                 .bold()
                 .font(.subheadline)
         }

@@ -14,9 +14,9 @@ struct GoalDescribeGrid: View {
     var body: some View {
         let milestones = goal.milestone
         let totalMilestones = milestones.count
-        let notStartedMilestones = milestones.filter { $0.status == .notstarted }.count
-        let inProgressMilestones = milestones.filter { $0.status == .inprogress }.count
-        let completedMilestones = milestones.filter { $0.status == .done }.count
+        let notStartedMilestones = milestones.filter { $0.status == 0 }.count
+        let inProgressMilestones = milestones.filter { $0.status == 1 }.count
+        let completedMilestones = milestones.filter { $0.status == 2 }.count
         NavigationLink(destination: GoalPage(goal: goal)){
             VStack(alignment: .leading){
                 HStack{
@@ -58,7 +58,7 @@ struct CircularProgressView: View {
     var body: some View {
         let milestones = goal.milestone
         let total = milestones.count
-        let completed = milestones.filter { $0.status == .done }.count
+        let completed = milestones.filter { $0.status == 3 }.count
         let progress = Double(completed/max(total, 1))
         ZStack {
             Circle()
