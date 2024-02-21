@@ -16,7 +16,6 @@ struct UserInfo: View {
     @State var username: String = ""
     @State var quote: String = ""
     @State var NotCompleted: Bool = false
-    @Query var quotes: [Quotes]
     var body: some View {
         VStack {
             VStack(alignment: .leading) {
@@ -47,14 +46,16 @@ struct UserInfo: View {
                     .bold()
                 TextField("Quote", text: $quote)
                 Button(action:{
-                    savequote()
+                    //savequote()
                 }){
                     Text("Add new")
                 }
                 List{
-                    ForEach(quotes){ quote in
-                        Text(quote.quote)
-                    }
+                    /*
+                     ForEach(quotes){ quote in
+                     Text(quote.quote)
+                     }
+                     */
                 }
                 .focused($isInputActive)
                 .toolbar {
@@ -92,13 +93,15 @@ struct UserInfo: View {
         }.padding()
     }
     private func saveuser() {
-        let newUser = UserData(username: username, Quote: quotes)
+        let newUser = UserData(username: username)
         context.insert(newUser)
     }
-    private func savequote() {
-        let newquote = Quotes(quote: quote)
-        context.insert(newquote)
-        quote = ""
-    }
+    /*
+     private func savequote() {
+     let newquote = Quotes(quote: quote)
+     context.insert(newquote)
+     quote = ""
+     }
+     */
 
 }

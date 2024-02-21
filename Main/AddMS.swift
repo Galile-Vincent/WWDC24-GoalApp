@@ -41,7 +41,7 @@ struct AddMS: View {
         }
     }
     func save(){
-        let newms = MileStone(name: name, detail: detail, status: 0)
+        let newms = MileStone(name: name, detail: detail, status: 0, tasks: [])
         goal.milestone.append(newms)
         name = ""
         detail = ""

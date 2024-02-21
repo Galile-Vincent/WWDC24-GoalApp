@@ -33,9 +33,17 @@ struct AllMSList: View {
     @Environment(\.dismiss) private var dismiss
     @State var goal: GoalData
     @State var miles: String = ""
+    @State var showdetail: Bool = false
     var body: some View {
         ForEach(goal.milestone) { ms in
-            ListRow(ms: ms)
+            Button(action:{
+                showdetail.toggle()
+            }){
+                ListRow(ms: ms)
+            }
+            .sheet(isPresented: $showdetail) {
+                Detail(ms: ms)
+            }
         }
         .onDelete(perform: { indexSet in
             for index in indexSet {
@@ -51,7 +59,6 @@ struct ListRow: View {
     @State var ms: MileStone
     let type = ["Not started", "In progress", "Done"]
     let color: [Color] = [.gray, .blue, .green]
-    
     var body: some View {
         HStack{
             Text(ms.name)
@@ -61,6 +68,47 @@ struct ListRow: View {
                 .bold()
                 .font(.subheadline)
         }
+    }
+}
+
+struct Detail: View {
+    @Environment(\.dismiss) private var dismiss
+    @State var ms: MileStone
+    @State var task: String = ""
+    var body: some View{
+        NavigationView{
+            List{
+                HStack{
+                    Text(ms.detail)
+                }
+                Section{
+                    HStack{
+                        TextField("Task", text: $task)
+                        Spacer()
+                        Button(action:{
+                            save()
+                            task = ""
+                        }){
+                            Text("Add")
+                        }
+                    }
+                    ForEach(ms.tasks, id: \.self){task in
+                        Text(task)
+                    }
+                }
+            }
+                .toolbar{
+                    ToolbarItem(placement: .topBarLeading){
+                        Button("Cancel") {
+                            dismiss()
+                        }
+                    }
+                }
+                .navigationTitle(ms.name)
+        }
+    }
+    func save(){
+        ms.tasks.append(task)
     }
 }
 

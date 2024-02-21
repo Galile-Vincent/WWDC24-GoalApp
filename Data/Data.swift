@@ -10,23 +10,13 @@ import Foundation
 @Model
 final class UserData{
     var username: String
-    @Relationship(deleteRule: .cascade, inverse: \Quotes.user) var Quote = [Quotes]()
     @Relationship(deleteRule: .cascade, inverse: \GoalData.user) var Goal = [GoalData]()
-    init(username: String, Quote: [Quotes] = [Quotes](), Goal: [GoalData] = [GoalData]()) {
+    init(username: String, Goal: [GoalData] = [GoalData]()) {
         self.username = username
-        self.Quote = Quote
         self.Goal = Goal
     }
 }
 
-@Model
-final class Quotes{
-    var quote: String
-    init(quote: String) {
-        self.quote = quote
-    }
-    var user: UserData?
-}
 
 @Model
 final class GoalData{
@@ -49,11 +39,28 @@ final class MileStone{
     var name: String
     var detail: String
     var status: Int
-    init(name: String, detail: String, status: Int) {
+    var tasks: [String]
+    //@Relationship(deleteRule: .cascade, inverse: \Tasks.name) var task = [Tasks]()
+    init(name: String, detail: String, status: Int, tasks: [String]) {
         self.name = name
         self.detail = detail
         self.status = status
+        self.tasks = tasks
     }
     var goal: GoalData?
     
 }
+
+/*
+ @Model
+ final class Tasks{
+ var name: String
+ var isCompleted: Bool
+ init(name: String, isCompleted: Bool) {
+ self.name = name
+ self.isCompleted = isCompleted
+ }
+ var milestone: MileStone?
+ 
+ }
+ */

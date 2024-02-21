@@ -30,7 +30,7 @@ struct MiddleGoals: View {
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Save") {
-                        let ml = MileStone(name: goalname, detail: detail, status: 0)
+                        let ml = MileStone(name: goalname, detail: detail, status: 0, tasks: [])
                         goal.milestone.append(ml)
                         dismiss()
                     }.disabled(goalname.isEmpty)

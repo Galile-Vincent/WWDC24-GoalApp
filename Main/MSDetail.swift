@@ -10,6 +10,7 @@ import SwiftData
 
 struct MSDetail: View {
     @State var ms: MileStone
+    @State var taskname: String = ""
     var body: some View {
         ScrollView{
             VStack(alignment: .leading){
@@ -19,6 +20,25 @@ struct MSDetail: View {
                     Spacer()
                 }
                 Text(ms.detail)
+                List{
+                    Section{
+                        HStack{
+                            TextField("Task", text: $taskname)
+                            Spacer()
+                            Button(action: {
+                                
+                            }){
+                                Text("Add")
+                            }
+                        }
+                    }
+                    
+                    Section{
+                        ForEach(ms.tasks, id: \.self){task in
+                            Text(task)
+                        }
+                    }
+                }
             }.padding(20)
                 .navigationTitle(ms.name)
         }.toolbar{
