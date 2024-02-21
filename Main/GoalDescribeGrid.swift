@@ -8,17 +8,18 @@
 import SwiftUI
 import SwiftData
 
-
 struct GoalDescribeGrid: View {
     @State var goal: GoalData
+
     var body: some View {
         let milestones = goal.milestone
         let totalMilestones = milestones.count
         let notStartedMilestones = milestones.filter { $0.status == 0 }.count
         let inProgressMilestones = milestones.filter { $0.status == 1 }.count
         let completedMilestones = milestones.filter { $0.status == 2 }.count
-        NavigationLink(destination: GoalPage(goal: goal)){
-            VStack(alignment: .leading){
+
+        NavigationLink(destination: GoalPage(goal: goal)) {
+            VStack(alignment: .leading) {
                 HStack{
                     Text(goal.goal)
                         .font(.title2)
@@ -27,29 +28,26 @@ struct GoalDescribeGrid: View {
                 }
                 Divider()
                     .padding(.bottom)
-                HStack{
-                    VStack(alignment: .leading){
+                HStack {
+                    VStack(alignment: .leading) {
                         CircularProgressView(goal: goal, circleframe: 100)
                     }
                     Divider()
                         .padding()
-                    VStack(alignment: .leading){
+                    VStack(alignment: .leading) {
                         Text("Total: \(totalMilestones)")
                         Text("Not Started: \(notStartedMilestones)")
                         Text("In Progress: \(inProgressMilestones)")
                     }
                 }
-                
                 Spacer()
             }
             .padding(10)
             .frame(minHeight: 150)
-            //.background(.ultraThinMaterial)
-            //.cornerRadius(10)
-            
         }
     }
 }
+
 
 
 struct CircularProgressView: View {

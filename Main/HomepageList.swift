@@ -19,9 +19,13 @@ struct HomepageList: View {
             ListRow(ms: goal)
         }
         .onDelete(perform: { indexSet in
-            for index in indexSet {
-                let itemToDelete = goal.milestone[index]
-                context.delete(itemToDelete)
+            do{
+                for index in indexSet {
+                    let itemToDelete = goal.milestone[index]
+                    context.delete(itemToDelete)
+                }
+                try context.save()
+            } catch {
             }
         })
     }
@@ -43,12 +47,18 @@ struct AllMSList: View {
             }
             .sheet(isPresented: $showdetail) {
                 Detail(ms: ms)
+                    .presentationDetents([.medium])
+                    .presentationBackground(.thinMaterial)
             }
         }
         .onDelete(perform: { indexSet in
-            for index in indexSet {
-                let itemToDelete = goal.milestone[index]
-                context.delete(itemToDelete)
+            do{
+                for index in indexSet {
+                    let itemToDelete = goal.milestone[index]
+                    context.delete(itemToDelete)
+                }
+                try context.save()
+            } catch {
             }
         })
     }
@@ -91,16 +101,19 @@ struct Detail: View {
                         }){
                             Text("Add")
                         }
-                    }
+                    } .listRowBackground(Color(white: 1, opacity: 0.4))
                     ForEach(ms.tasks, id: \.self){task in
                         Text(task)
                     }
                 }
             }
                 .toolbar{
-                    ToolbarItem(placement: .topBarLeading){
-                        Button("Cancel") {
+                    ToolbarItem(placement: .topBarTrailing){
+                        Button(action: {
                             dismiss()
+                        }){
+                            Image(systemName: "xmark.circle.fill")
+                                .foregroundStyle(.black.opacity(0.4))
                         }
                     }
                 }

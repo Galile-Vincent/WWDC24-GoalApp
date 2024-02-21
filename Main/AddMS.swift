@@ -15,26 +15,32 @@ struct AddMS: View {
     @State var detail: String = ""
     var body: some View {
         NavigationView{
-            List{
-                Section{
-                    TextField("Goal Name", text: $name)
-                }
-                Section{
-                    TextField("Detail", text: $detail)
-                }
-            }.toolbar{
-                ToolbarItem(placement: .topBarLeading){
-                    Button(action:{
-                        dismiss()
-                    }){
-                        Text("Cancel")
+            VStack{
+                List{
+                    Section{
+                        TextField("Goal Name", text: $name)
+                            .listRowBackground(Color(white: 1, opacity: 0.4))
+                    }
+                    Section{
+                        TextField("Detail", text: $detail)
+                            .listRowBackground(Color(white: 1, opacity: 0.4))
                     }
                 }
+                Button(action:{
+                    save()
+                }){
+                    Text("Save")
+                }.disabled(name.isEmpty)
+                    .buttonStyle(.borderedProminent)
+            }
+            .scrollContentBackground(.hidden)
+        .toolbar{
                 ToolbarItem(placement: .topBarTrailing){
-                    Button(action:{
-                        save()
+                    Button(action: {
+                        dismiss()
                     }){
-                        Text("Save")
+                        Image(systemName: "xmark.circle.fill")
+                            .foregroundStyle(.black.opacity(0.4))
                     }
                 }
             }

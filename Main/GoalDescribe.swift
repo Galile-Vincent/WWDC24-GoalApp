@@ -9,7 +9,7 @@ import SwiftUI
 import SwiftData
 
 struct GoalDescribe: View {
-    @State var goal: GoalData
+    @Binding var goal: GoalData
     var body: some View {
         let milestones = goal.milestone
         let totalMilestones = milestones.count

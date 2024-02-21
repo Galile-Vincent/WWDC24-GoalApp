@@ -20,7 +20,7 @@ struct GoalPage: View {
         NavigationStack{
             List{
                 Section{
-                    GoalDescribe(goal: goal)
+                    GoalDescribe(goal: $goal)
                         .foregroundStyle(Color.black)
                         .listRowBackground(Color(white: 1, opacity: 0.3))
                 }
@@ -123,11 +123,13 @@ struct GoalPage: View {
                     Spacer()
                 }
             }
-            .navigationTitle(goal.goal)
+            .navigationTitle("\(goal.goal) \(goal.milestone.count)")
             //.navigationTitle("\(goal.user!.username)'s Goal")
             .sheet(isPresented: $showadd) {
                 AddMS(goal: goal)
                     .presentationDetents([.medium])
+                    .presentationBackground(.thinMaterial)
+                
             }
             .sheet(isPresented: $showedit) {
                 GoalEdit(goal: goal, onDelete: onDeleteGoal)
@@ -135,7 +137,6 @@ struct GoalPage: View {
         }.accentColor(.orange)
     }
     func onDeleteGoal() {
-        // Navigate back to the home page
         dismiss()
     }
 }
