@@ -8,8 +8,16 @@
 import SwiftUI
 
 struct HomePageEmpty: View {
+    @State var user: UserData
     var body: some View {
         VStack(alignment: .center){
+            Section{
+                VStack{
+                    Text(user.username)
+                        .font(.title2)
+                    
+                }
+            }.listRowBackground(Color.black.opacity(0.4))
             Spacer()
             Image("logo")
                 .resizable()

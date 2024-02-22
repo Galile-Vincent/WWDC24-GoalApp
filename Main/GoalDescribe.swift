@@ -16,7 +16,7 @@ struct GoalDescribe: View {
         let notStartedMilestones = milestones.filter { $0.status == 0 }.count
         let inProgressMilestones = milestones.filter { $0.status == 1 }.count
         let completedMilestones = milestones.filter { $0.status == 2 }.count
-        
+        let progress = Double(completedMilestones / max(totalMilestones, 1))
         VStack(alignment: .leading){
             Text("Detail:")
                 .bold()
@@ -29,7 +29,28 @@ struct GoalDescribe: View {
                 .padding(.bottom)
             HStack{
                 VStack(alignment: .leading){
-                    CircularProgressView(goal: goal, circleframe: 100)
+                    ZStack {
+                        Circle()
+                            .stroke(
+                                Color.pink.opacity(0.5),
+                                lineWidth: 13
+                            )
+                        Circle()
+                        // 2
+                            .trim(from: 0, to: progress)
+                            .stroke(
+                                Color.pink,
+                                style: StrokeStyle(
+                                    lineWidth: 13,
+                                    lineCap: .round
+                                )
+                            )
+                            .rotationEffect(.degrees(-90))
+                        VStack{
+                            Text("\(completedMilestones)")
+                            Text("\(totalMilestones)")
+                        }
+                    }.frame(width: 100, height: 100)
                 }
                 Divider()
                     .padding()

@@ -15,10 +15,19 @@ struct Home: View {
     var body: some View {
         ZStack(alignment: .bottom){
             if user.Goal.isEmpty{
-                HomePageEmpty()
+                HomePageEmpty(user: user)
             }else{
                 let goal = user.Goal
                 List {
+                    Section{
+                        Section{
+                            VStack{
+                                Text(user.username)
+                                    .font(.title2)
+                                
+                            }
+                        }.listRowBackground(Color.black.opacity(0.4))
+                    }
                     ForEach(goal) { index in
                         Section {
                             GoalDescribeGrid(goal: index)
@@ -44,7 +53,7 @@ struct Home: View {
                             .font(.system(size: 70))
                             .foregroundStyle(Color.orange)
                         
-                    }
+                    }.popoverTip(addgoal(), arrowEdge:.top)
                     Spacer()
                 }.background(
                     LinearGradient(colors: [.clear ,.white], startPoint: .top, endPoint: .bottom)

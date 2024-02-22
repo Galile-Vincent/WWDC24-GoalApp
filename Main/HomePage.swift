@@ -119,7 +119,7 @@ struct GoalPage: View {
                                 .font(.system(.body, design: .rounded))
                         }.foregroundStyle(.purple)
                             .bold()
-                    }
+                    }.popoverTip(addmstip(), arrowEdge:.top)
                     Spacer()
                 }
             }

@@ -44,7 +44,7 @@ struct AddMS: View {
                     }
                 }
             }
-        }
+        }.navigationTitle("Add new goal")
     }
     func save(){
         let newms = MileStone(name: name, detail: detail, status: 0, tasks: [])
