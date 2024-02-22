@@ -7,7 +7,7 @@ struct MyApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .modelContainer(for: [UserData.self, MileStone.self, GoalData.self], isAutosaveEnabled: true)
+                .modelContainer(for: [UserData.self, MileStone.self, GoalData.self, Tasks.self], isAutosaveEnabled: true)
                 .environmentObject(Login())
                 .task {
                     try? Tips.configure([

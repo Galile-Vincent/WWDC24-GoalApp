@@ -123,7 +123,7 @@ struct GoalPage: View {
                     Spacer()
                 }
             }
-            .navigationTitle("\(goal.goal) \(goal.milestone.count)")
+            .navigationTitle(goal.goal)
             //.navigationTitle("\(goal.user!.username)'s Goal")
             .sheet(isPresented: $showadd) {
                 AddMS(goal: goal)

@@ -75,55 +75,12 @@ struct ListRow: View {
         }
         .sheet(isPresented: $showdetail) {
             Detail(ms: ms)
-                .presentationDetents([.medium])
+                .presentationDetents([.medium, .large])
                 .presentationBackground(.thinMaterial)
         }
     }
 }
 
-struct Detail: View {
-    @Environment(\.dismiss) private var dismiss
-    @State var ms: MileStone
-    @State var task: String = ""
-    var body: some View{
-        NavigationView{
-            List{
-                HStack{
-                    Text(ms.detail)
-                }
-                Section{
-                    HStack{
-                        TextField("Task", text: $task)
-                        Spacer()
-                        Button(action:{
-                            save()
-                            task = ""
-                        }){
-                            Text("Add")
-                        }
-                    } .listRowBackground(Color(white: 1, opacity: 0.4))
-                    ForEach(ms.tasks, id: \.self){task in
-                        Text(task)
-                    }
-                }
-            }
-                .toolbar{
-                    ToolbarItem(placement: .topBarTrailing){
-                        Button(action: {
-                            dismiss()
-                        }){
-                            Image(systemName: "xmark.circle.fill")
-                                .foregroundStyle(.black.opacity(0.4))
-                        }
-                    }
-                }
-                .navigationTitle(ms.name)
-        }
-    }
-    func save(){
-        ms.tasks.append(task)
-    }
-}
 
 
 

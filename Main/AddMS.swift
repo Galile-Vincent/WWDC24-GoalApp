@@ -25,7 +25,7 @@ struct AddMS: View {
                         TextField("Detail", text: $detail)
                             .listRowBackground(Color(white: 1, opacity: 0.4))
                     }
-                }
+                }.padding(.top,10)
                 Button(action:{
                     save()
                 }){
@@ -45,8 +45,8 @@ struct AddMS: View {
                     }
                 }
             }
-        }
         .navigationTitle("Add new goal")
+        }
     }
     func save(){
         let newms = MileStone(name: name, detail: detail, status: 0, tasks: [])
