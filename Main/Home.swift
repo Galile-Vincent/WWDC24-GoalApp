@@ -11,6 +11,7 @@ import SwiftData
 struct Home: View {
     @State var user: UserData
     @State var showadd: Bool = false
+    @State var showedit: Bool = false
     @State private var refreshFlag = UUID()
     var body: some View {
         ZStack(alignment: .bottom){
@@ -68,9 +69,22 @@ struct Home: View {
                 .ignoresSafeArea(.all)
         )
         .navigationTitle("Goal")
-        
+        .toolbar{
+            ToolbarItem(placement: .topBarTrailing){
+                Button(action:{
+                    showedit.toggle()
+                }){
+                    Image(systemName: "person.circle")
+                }
+            }
+        }
         .sheet(isPresented: $showadd) {
             AddGoal(user: user)
+                .presentationDetents([.medium])
+                .presentationBackground(.thinMaterial)
+        }
+        .sheet(isPresented: $showedit) {
+            UserInfo1(user: user)
         }
     }
 }

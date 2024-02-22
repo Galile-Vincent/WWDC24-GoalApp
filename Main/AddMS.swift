@@ -32,6 +32,7 @@ struct AddMS: View {
                     Text("Save")
                 }.disabled(name.isEmpty)
                     .buttonStyle(.borderedProminent)
+                    .padding(.bottom, 20)
             }
             .scrollContentBackground(.hidden)
         .toolbar{
@@ -44,7 +45,8 @@ struct AddMS: View {
                     }
                 }
             }
-        }.navigationTitle("Add new goal")
+        }
+        .navigationTitle("Add new goal")
     }
     func save(){
         let newms = MileStone(name: name, detail: detail, status: 0, tasks: [])

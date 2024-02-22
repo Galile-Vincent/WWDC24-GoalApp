@@ -21,47 +21,38 @@ struct AddGoal: View {
     }
     var body: some View {
         NavigationView {
-            ZStack{
+            VStack{
                 List {
                     Section{
-                        VStack(alignment: .leading){
-                            HStack{
-                                TextField("Goal", text: $goal)
-                                    .font(.title2)
-                                    .bold()
-                                Spacer()
-                            }
-                            Divider()
-                            TextField("Detail",text: $goal_describe)
-                            
-                            Spacer()
-                        }
-                        .padding(10)
-                        .frame(minHeight: 150)
+                        TextField("Goal", text: $goal)
+                            .listRowBackground(Color(white: 1, opacity: 0.4))
                     }
                     Section{
-                        //add middlegoal
-                        //.listRowBackground(Color(white: 1, opacity: 0.3))
-                        
-                    } header:{
-                        Text("Middle Goal")
-                            .font(.headline)
+                        TextField("Detail", text: $goal_describe)
+                            .listRowBackground(Color(white: 1, opacity: 0.4))
                     }
                 }
+                Button(action:{
+                    save()
+                }){
+                    Text("Save")
+                }.disabled(goal.isEmpty)
+                    .buttonStyle(.borderedProminent)
+                    .padding(.bottom, 20)
             }
-            .foregroundStyle(Color.black)
             .toolbar{
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action:{
-                        save()
+                ToolbarItem(placement: .topBarTrailing){
+                    Button(action: {
+                        dismiss()
                     }){
-                        Text("Done")
-                    }.disabled(goal.isEmpty)
+                        Image(systemName: "xmark.circle.fill")
+                            .foregroundStyle(.black.opacity(0.4))
+                    }
                 }
             }.alert("\(goal) already existed", isPresented: $shownotice){
                 Button("OK", role: .cancel) {}
-                }
-        }
+            }
+        }            .scrollContentBackground(.hidden)
     }
 
     func save(){
