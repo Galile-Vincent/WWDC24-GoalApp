@@ -11,7 +11,7 @@ import SwiftData
 struct GoalDescribeGrid: View {
     @State var goal: GoalData
     var body: some View {
-        let progress = Double(goal.DoneMilestoneCount() / max(goal.totalMilestoneCount(), 1))
+        let progress = Double(Double(goal.DoneMilestoneCount()) / Double(max(goal.totalMilestoneCount(), 1)))
         NavigationLink(destination: GoalPage(goal: goal)) {
             VStack(alignment: .leading) {
                 HStack{

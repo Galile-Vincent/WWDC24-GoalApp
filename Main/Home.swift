@@ -21,15 +21,10 @@ struct Home: View {
                 let goal = user.Goal
                 List {
                     Section{
-                        Section{
-                            VStack{
-                                Text(user.username)
-                                    .font(.title2)
-                                
-                            }
-                        }.listRowBackground(Color.black.opacity(0.4))
+                        QuoteView(user: user)
+                            .listRowBackground(Color.black.opacity(0.2))
                     }
-                    ForEach(goal) { index in
+                    ForEach(goal.sorted(by: { $0.goal < $1.goal })) { index in
                         Section {
                             GoalDescribeGrid(goal: index)
                                 .foregroundStyle(Color.black)
@@ -50,9 +45,15 @@ struct Home: View {
                     Button(action:{
                         showadd = true
                     }){
-                        Image(systemName: "plus.circle.fill")
-                            .font(.system(size: 70))
-                            .foregroundStyle(Color.orange)
+                        ZStack{
+                            Circle()
+                                .foregroundStyle(.orange)
+                                    .frame(width: 70, height: 70)
+                            Image(systemName: "plus")
+                                .font(.system(size: 30))
+                                .foregroundStyle(.white)
+                                .bold()
+                        }
                         
                     }.popoverTip(addgoal(), arrowEdge:.top)
                     Spacer()
@@ -68,16 +69,24 @@ struct Home: View {
             LinearGradient(colors: [.purple, .yellow], startPoint: .topLeading, endPoint: .bottomTrailing)
                 .ignoresSafeArea(.all)
         )
-        .navigationTitle("Goal")
+        
+        //.navigationTitle("Goal")
         .toolbar{
+            ToolbarItem(placement: .topBarLeading){
+                Text("Goal")
+                    .font(.title)
+                    .bold()
+            }
             ToolbarItem(placement: .topBarTrailing){
                 Button(action:{
                     showedit.toggle()
                 }){
                     Image(systemName: "person.circle")
+                        .foregroundColor(.orange)
+                        .font(.title2)
                 }
             }
-        }
+        }.navigationBarTitleDisplayMode(.inline)
         .sheet(isPresented: $showadd) {
             AddGoal(user: user)
                 .presentationDetents([.medium])
@@ -85,18 +94,9 @@ struct Home: View {
         }
         .sheet(isPresented: $showedit) {
             UserInfo1(user: user)
+                .presentationBackground(.thinMaterial)
         }
     }
 }
 
-/*
- private func reset(){
-     do {
-         try context.delete(model: UserData.self)
-     } catch {
-         print("Failed to clear all data.")
-     }
-     isOnBoarding = true
-     login.page = 0
- }
- */
+

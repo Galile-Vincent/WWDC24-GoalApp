@@ -27,16 +27,28 @@ struct Detail: View {
                 Section{
                     VStack(alignment: .leading){
                         HStack{
-                            Text(ms.detail)
+                            Text("Detail:")
+                                .bold()
                             Spacer()
                             Text(type[ms.status])
                                 .foregroundStyle(color[ms.status])
                                 .bold()
                         }
+                        Text(ms.detail)
                         
                          Text("Progress:")
-                         let pregress = Double(iscompleted/max(total,1))
-                         ProgressView(value: pregress)
+                            .bold()
+                         let progress = Double(Double(iscompleted)/Double(max(total,1)))
+                        VStack{
+                            ProgressView(value: progress)
+                            HStack{
+                                Spacer()
+                                let progressText = String(format: "%.0f%%", progress * 100)
+                                Text(progressText)
+                                    .bold()
+                            }
+                        }
+                        .padding(.bottom, 5)
                          
                         
                     }.listRowBackground(Color(white: 1, opacity: 0.4))
@@ -44,13 +56,13 @@ struct Detail: View {
                 Section{
                     HStack{
                         TextField("Task", text: $task)
-                        Spacer()
                         Button(action:{
                             save()
                             ms.updateStatus()
                         }){
                             Text("Add")
-                        }
+                                .foregroundStyle(.blue)
+                        }.disabled(task.isEmpty)
                     }
                     ForEach(ms.tasks){index in
                         HStack{
@@ -108,6 +120,6 @@ struct TasksRow: View {
                 Image(systemName: "circlebadge.fill")
                     .font(.system(size: 20))
             }
-        }
+        }.foregroundStyle(.black)
     }
 }

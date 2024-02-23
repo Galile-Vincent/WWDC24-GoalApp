@@ -10,9 +10,11 @@ import Foundation
 @Model
 final class UserData{
     var username: String
+    var quotes: [String]
     @Relationship(deleteRule: .cascade, inverse: \GoalData.user) var Goal = [GoalData]()
-    init(username: String, Goal: [GoalData] = [GoalData]()) {
+    init(username: String, quotes: [String], Goal: [GoalData] = [GoalData]()) {
         self.username = username
+        self.quotes = quotes
         self.Goal = Goal
     }
 }

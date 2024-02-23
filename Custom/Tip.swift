@@ -7,6 +7,12 @@ struct addmstip: Tip{
     var message: Text?{
         Text("You can add your new Short-term goals in the goal")
     }
+    var rules: [Rule] {
+            #Rule(Self.$hasViewedGetStartedTip) { $0 == true }
+        }
+
+        @Parameter
+        static var hasViewedGetStartedTip: Bool = false
 }
 
 struct addgoal: Tip{
@@ -16,4 +22,10 @@ struct addgoal: Tip{
     var message: Text?{
         Text("You can add new goals")
     }
+    var rules: [Rule] {
+            #Rule(Self.$hasViewedGetStartedTip) { $0 == true }
+        }
+
+        @Parameter
+        static var hasViewedGetStartedTip: Bool = false
 }

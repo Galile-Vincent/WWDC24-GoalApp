@@ -8,14 +8,22 @@
 import SwiftUI
 import SwiftData
 
+struct Quote: Identifiable {
+    let id = UUID()
+    let quote: String
+}
+
 struct UserInfo: View {
     @Environment(\.modelContext) private var context
     @AppStorage ("isOnBoarding") var isOnBoarding: Bool = true
     @EnvironmentObject var login: Login
     @FocusState var isInputActive: Bool
+    @State var defaultQuotesAdded: Bool = false
     @State var username: String = ""
     @State var quote: String = ""
     @State var NotCompleted: Bool = false
+    @State var quotes: [Quote] = []
+    let defaultquotes = ["The greatest glory in living lies not in never falling, but in rising every time we fall. -Nelson Mandela", "Your time is limited, so don't waste it living someone else's life. Don't be trapped by dogma – which is living with the results of other people's thinking. -Steve Jobs","You must be the change you wish to see in the world. -Mahatma Gandhi"]
     var body: some View {
         VStack {
             VStack(alignment: .leading) {
@@ -44,38 +52,54 @@ struct UserInfo: View {
                 Text("What's your Favorite Quotes?")
                     .font(.title)
                     .bold()
-                TextField("Quote", text: $quote)
+                HStack{
+                    TextField("Quote", text: $quote)
+                        .textFieldStyle(.roundedBorder)
+                    Button(action:{
+                        quotes.append(Quote(quote: quote))
+                        quote = ""
+                    }){
+                        Text("Add")
+                            .bold()
+                    }.disabled(quote.isEmpty)
+                }
                 Button(action:{
-                    //savequote()
-                }){
-                    Text("Add new")
-                }
-                List{
-                    /*
-                     ForEach(quotes){ quote in
-                     Text(quote.quote)
-                     }
-                     */
-                }
-                .focused($isInputActive)
-                .toolbar {
-                    ToolbarItemGroup(placement: .keyboard) {
-                        Spacer()
-                        
-                        Button("Done") {
-                            isInputActive = false
+                    if !defaultQuotesAdded {
+                        for defaultQuote in defaultquotes {
+                            quotes.append(Quote(quote: defaultQuote))
                         }
+                        defaultQuotesAdded = true
+                    }
+                }){
+                    Text("Add default quotes?")
+                        .font(.caption)
+                        .bold()
+                }
+                List {
+                    ForEach(quotes) { quote in
+                        Text(quote.quote)
+                            .listRowBackground(Color.black.opacity(0.4))
                     }
                 }
-                .onTapGesture {
-                    hideKeyboard()
-                }
+                    .focused($isInputActive)
+                    .toolbar {
+                        ToolbarItemGroup(placement: .keyboard) {
+                            Spacer()
+                            
+                            Button("Done") {
+                                isInputActive = false
+                            }
+                        }
+                    }
+                    .onTapGesture {
+                        hideKeyboard()
+                    }
             }
             Spacer()
             ZStack{
                 Button(action: {
                     if !username.isEmpty{
-                        saveuser()
+                        saveUser()
                         isOnBoarding = false
                     }else{
                         NotCompleted = true
@@ -91,17 +115,13 @@ struct UserInfo: View {
             }
             
         }.padding()
+            .scrollContentBackground(.hidden)
     }
-    private func saveuser() {
-        let newUser = UserData(username: username)
+    func saveUser() {
+        let quoteStrings = quotes.map { $0.quote } // Extract quotes from Quote struct and convert them to strings
+        let newUser = UserData(username: username, quotes: quoteStrings)
         context.insert(newUser)
     }
-    /*
-     private func savequote() {
-     let newquote = Quotes(quote: quote)
-     context.insert(newquote)
-     quote = ""
-     }
-     */
-
+    
+    
 }

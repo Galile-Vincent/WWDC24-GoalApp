@@ -19,6 +19,7 @@ struct AddGoal: View {
     var notUnique: Bool {
         user.Goal.contains(where: { $0.goal == goal })
     }
+    
     var body: some View {
         NavigationView {
             VStack{
@@ -31,7 +32,7 @@ struct AddGoal: View {
                         TextField("Detail", text: $goal_describe)
                             .listRowBackground(Color(white: 1, opacity: 0.4))
                     }
-                }
+                }.padding(.top, 10)
                 Button(action:{
                     save()
                 }){
@@ -52,6 +53,7 @@ struct AddGoal: View {
             }.alert("\(goal) already existed", isPresented: $shownotice){
                 Button("OK", role: .cancel) {}
             }
+            .navigationTitle("Add Goal")
         }            .scrollContentBackground(.hidden)
     }
 

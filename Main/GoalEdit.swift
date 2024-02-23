@@ -22,9 +22,15 @@ struct GoalEdit: View {
             List{
                 Section{
                     TextField("Name", text: $goalname)
+                        .listRowBackground(Color(white: 1, opacity: 0.4))
+                }header: {
+                    Text("Goal Name")
                 }
                 Section{
                     TextField("Detail", text: $goaldescribe)
+                        .listRowBackground(Color(white: 1, opacity: 0.4))
+                }header: {
+                    Text("Goal Detail")
                 }
                 Section{
                     Button {
@@ -65,6 +71,7 @@ struct GoalEdit: View {
             .navigationBarTitleDisplayMode(.inline)
         }
         .interactiveDismissDisabled()
+        .scrollContentBackground(.hidden)
     }
     private func update() {
         goal.goal = goalname

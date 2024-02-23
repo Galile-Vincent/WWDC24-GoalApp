@@ -16,6 +16,8 @@ struct GoalPage: View {
     @State var showedit: Bool = false
     @State var showadd: Bool = false
     @State var steps: String = ""
+    @State var goalname: String = ""
+    @State var goaldescribe: String = ""
     var body: some View {
         NavigationStack{
             List{
@@ -91,8 +93,8 @@ struct GoalPage: View {
                             }
                             
                         } label: {
-                            Image(systemName: "line.3.horizontal.decrease.circle.fill")
-                                .foregroundStyle(.white.opacity(0.6))
+                            Image(systemName: "line.3.horizontal.decrease.circle")
+                                .foregroundStyle(.purple)
                                 .font(.title3)
                         }.padding(.bottom,5)
                     }
@@ -104,10 +106,21 @@ struct GoalPage: View {
                     .ignoresSafeArea(.all)
             )
             .toolbar{
-                ToolbarItem(placement: .navigationBarTrailing) {
+                ToolbarItem(placement: .topBarTrailing) {
                     Button("Edit") {
                         showedit.toggle()
-                    }.bold().font(.system(.body, design: .rounded))
+                    }.bold().font(.system(.body, design: .rounded)).foregroundStyle(.orange)
+                }
+                ToolbarItem(placement: .topBarLeading) {
+                    Button(action:{
+                        update()
+                        dismiss()
+                    }){
+                        HStack{
+                            Image(systemName: "chevron.backward")
+                            Text("Back")
+                        }.bold().font(.body)
+                    } .foregroundStyle(.orange)
                 }
                 ToolbarItemGroup(placement: .bottomBar) {
                     Button(action: {
@@ -133,21 +146,19 @@ struct GoalPage: View {
             }
             .sheet(isPresented: $showedit) {
                 GoalEdit(goal: goal, onDelete: onDeleteGoal)
+                    .presentationBackground(.thinMaterial)
             }
-        }.accentColor(.orange)
+            .navigationBarBackButtonHidden(true)
+        }
     }
     func onDeleteGoal() {
         dismiss()
     }
+    private func update() {
+        goalname = goal.goal
+        goaldescribe = goal.goal_describe
+        goal.goal = goalname
+        goal.goal_describe = goaldescribe
+    }
 }
-/*
- private func reset(){
-     do {
-         try context.delete(model: UserData.self)
-     } catch {
-         print("Failed to clear all data.")
-     }
-     isOnBoarding = true
-     login.page = 0
- }
- */
+

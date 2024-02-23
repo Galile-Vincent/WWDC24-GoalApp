@@ -31,7 +31,6 @@ struct ContentView: View {
                 }
             }
         }.preferredColorScheme(.light)
-            .accentColor(.orange)
     }
 }
 

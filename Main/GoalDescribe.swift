@@ -36,7 +36,7 @@ struct GoalDescribe: View {
                             )
                         Circle()
                         // 2
-                            .trim(from: 0, to: Double(completedMilestones / max(totalMilestones, 1)))
+                            .trim(from: 0, to: Double(Double(completedMilestones) / Double(max(totalMilestones, 1))))
                             .stroke(
                                 Color.pink,
                                 style: StrokeStyle(
@@ -45,7 +45,7 @@ struct GoalDescribe: View {
                                 )
                             )
                             .rotationEffect(.degrees(-90))
-                        let progressText = String(format: "%.0f%%", Double(completedMilestones / max(totalMilestones, 1)) * 100)
+                        let progressText = String(format: "%.0f%%", Double(Double(completedMilestones) / Double(max(totalMilestones, 1))) * 100)
                         Text(progressText)
                             .font(.system(size: 25, weight: .bold, design: .rounded))
                             .foregroundStyle(Color(.systemGray))

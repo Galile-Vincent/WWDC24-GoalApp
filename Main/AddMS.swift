@@ -45,7 +45,7 @@ struct AddMS: View {
                     }
                 }
             }
-        .navigationTitle("Add new goal")
+        .navigationTitle("Add goal")
         }
     }
     func save(){
