@@ -14,6 +14,7 @@ struct Home: View {
     @State var showedit: Bool = false
     @State private var refreshFlag = UUID()
     var body: some View {
+        
         ZStack(alignment: .bottom){
             if user.Goal.isEmpty{
                 HomePageEmpty(user: user)
@@ -48,7 +49,7 @@ struct Home: View {
                         ZStack{
                             Circle()
                                 .foregroundStyle(.orange)
-                                    .frame(width: 70, height: 70)
+                                .frame(width: 70, height: 70)
                             Image(systemName: "plus")
                                 .font(.system(size: 30))
                                 .foregroundStyle(.white)
@@ -57,11 +58,14 @@ struct Home: View {
                         
                     }.popoverTip(addgoal(), arrowEdge:.top)
                     Spacer()
-                }.background(
-                    LinearGradient(colors: [.clear ,.white], startPoint: .top, endPoint: .bottom)
-                        .blur(radius: 30)
-                        .ignoresSafeArea()
-                )
+                }/*
+                  .background(
+                      LinearGradient(colors: [.clear ,.white], startPoint: .top, endPoint: .bottom)
+                          .blur(radius: 30)
+                          .ignoresSafeArea()
+                  )
+
+                  */
             }
         }
         .scrollContentBackground(.hidden)

@@ -13,6 +13,10 @@ struct AddMS: View {
     @Environment(\.dismiss) private var dismiss
     @State var name: String = ""
     @State var detail: String = ""
+    @State var shownotice: Bool = false
+    var notUnique: Bool {
+        goal.milestone.contains(where: { $0.name == name })
+    }
     var body: some View {
         NavigationView{
             VStack{
@@ -35,7 +39,7 @@ struct AddMS: View {
                     .padding(.bottom, 20)
             }
             .scrollContentBackground(.hidden)
-        .toolbar{
+            .toolbar{
                 ToolbarItem(placement: .topBarTrailing){
                     Button(action: {
                         dismiss()
@@ -45,21 +49,28 @@ struct AddMS: View {
                     }
                 }
             }
-        .navigationTitle("Add goal")
+            .alert("\(name) already existed", isPresented: $shownotice){
+                Button("OK", role: .cancel) {}
+            }
+            .navigationTitle("Add goal")
         }
     }
     func save(){
-        let newms = MileStone(name: name, detail: detail, status: 0, tasks: [])
-        goal.milestone.append(newms)
-        name = ""
-        detail = ""
-        dismiss()
+        if notUnique{
+            shownotice = true
+        }else{
+            let newms = MileStone(name: name, detail: detail, status: 0, tasks: [])
+            goal.milestone.append(newms)
+            name = ""
+            detail = ""
+            dismiss()
+        }
     }
 }
 
 struct MSRow: View {
     @State var ms: MileStone
-    let type = ["Not started", "In progress", "Done"]
+    let type = ["Not started", "In progress", "Completed"]
     let color: [Color] = [.gray, .blue, .green]
     var body: some View {
         HStack{

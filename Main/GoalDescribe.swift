@@ -31,14 +31,14 @@ struct GoalDescribe: View {
                     ZStack {
                         Circle()
                             .stroke(
-                                Color.pink.opacity(0.5),
+                                (Double(Double(completedMilestones) / Double(max(totalMilestones, 1))) == 1) ? Color.clear : Color.pink.opacity(0.5),
                                 lineWidth: 13
                             )
                         Circle()
                         // 2
                             .trim(from: 0, to: Double(Double(completedMilestones) / Double(max(totalMilestones, 1))))
                             .stroke(
-                                Color.pink,
+                                (Double(Double(completedMilestones) / Double(max(totalMilestones, 1))) == 1) ? Color.green.opacity(0.6) : Color.pink,
                                 style: StrokeStyle(
                                     lineWidth: 13,
                                     lineCap: .round
@@ -54,9 +54,10 @@ struct GoalDescribe: View {
                 Divider()
                     .padding()
                 VStack(alignment: .leading){
-                    Text("Total: \(totalMilestones)")
                     Text("Not Started: \(notStartedMilestones)")
                     Text("In Progress: \(inProgressMilestones)")
+                        .padding(.vertical, 1)
+                    Text("Completed: \(completedMilestones)")
                 }
             }
         }

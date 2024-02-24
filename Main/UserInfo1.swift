@@ -10,6 +10,7 @@ struct UserInfo1 : View {
     @Environment(\.dismiss) private var dismiss
     @State private var isDeleting = false
     @State var username: String = ""
+    @State var quote: String = ""
     var body: some View {
         NavigationView{
             List{
@@ -21,6 +22,16 @@ struct UserInfo1 : View {
                 }
                 
                 Section{
+                    HStack{
+                        TextField("Quote", text: $quote)
+                        Button(action:{
+                            user.quotes.append(quote)
+                            quote = ""
+                        }){
+                            Text("Add")
+                                .bold()
+                        }.disabled(quote.isEmpty)
+                    }.listRowBackground(Color(white: 1, opacity: 0.4))
                     ForEach(user.quotes, id: \.self){ quote in
                         Text(quote)
                             .listRowBackground(Color(white: 1, opacity: 0.4))

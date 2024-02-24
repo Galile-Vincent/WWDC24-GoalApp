@@ -66,7 +66,7 @@ struct AllMSList: View {
 
 struct ListRow: View {
     @State var ms: MileStone
-    let type = ["Not started", "In progress", "Done"]
+    let type = ["Not started", "In progress", "Completed"]
     let color: [Color] = [.gray, .blue, .green]
     @State var showdetail: Bool = false
     var body: some View {

@@ -11,6 +11,7 @@ import SwiftData
 struct GoalDescribeGrid: View {
     @State var goal: GoalData
     var body: some View {
+        
         let progress = Double(Double(goal.DoneMilestoneCount()) / Double(max(goal.totalMilestoneCount(), 1)))
         NavigationLink(destination: GoalPage(goal: goal)) {
             VStack(alignment: .leading) {
@@ -27,14 +28,14 @@ struct GoalDescribeGrid: View {
                         ZStack {
                             Circle()
                                 .stroke(
-                                    Color.pink.opacity(0.5),
+                                    (progress == 1) ? Color.clear : Color.pink.opacity(0.5),
                                     lineWidth: 13
                                 )
                             Circle()
                             // 2
                                 .trim(from: 0, to: progress)
                                 .stroke(
-                                    Color.pink,
+                                    (progress == 1) ? Color.green.opacity(0.6) : Color.pink.opacity(0.7),
                                     style: StrokeStyle(
                                         lineWidth: 13,
                                         lineCap: .round
@@ -50,9 +51,10 @@ struct GoalDescribeGrid: View {
                     Divider()
                         .padding()
                     VStack(alignment: .leading) {
-                        Text("Total: \(goal.totalMilestoneCount())")
                         Text("Not Started: \(goal.NotStartedMilestoneCount())")
                         Text("In Progress: \(goal.inProgressMilestoneCount())")
+                            .padding(.vertical, 1)
+                        Text("Completed: \(goal.DoneMilestoneCount())")
                     }
                 }
                 Spacer()

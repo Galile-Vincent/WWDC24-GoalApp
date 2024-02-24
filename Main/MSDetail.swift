@@ -12,10 +12,13 @@ struct Detail: View {
     @Environment(\.dismiss) private var dismiss
     @State var ms: MileStone
     @State var task: String = ""
+    @State var name: String = ""
+    @State var detail: String = ""
     let color: [Color] = [.gray, .blue, .green]
-    let type = ["Not started", "In progress", "Done"]
+    let type = ["Not started", "In progress", "Completed"]
     @Environment(\.modelContext) private var context
     @State var shownotice: Bool = false
+    @State var edit: Bool = false
     var notUnique: Bool {
         ms.tasks.contains(where: { $0.name == task })
     }
@@ -24,34 +27,50 @@ struct Detail: View {
         let iscompleted = ms.tasks.filter({$0.isCompleted == true}).count
         NavigationView{
             List{
-                Section{
-                    VStack(alignment: .leading){
-                        HStack{
-                            Text("Detail:")
-                                .bold()
-                            Spacer()
-                            Text(type[ms.status])
-                                .foregroundStyle(color[ms.status])
-                                .bold()
-                        }
-                        Text(ms.detail)
-                        
-                         Text("Progress:")
-                            .bold()
-                         let progress = Double(Double(iscompleted)/Double(max(total,1)))
-                        VStack{
-                            ProgressView(value: progress)
+                if edit{
+                    Section{
+                        TextField("Goal Name", text: $name)
+                            .listRowBackground(Color(white: 1, opacity: 0.4))
+                    }
+                    Section{
+                        TextField("Detail", text: $detail)
+                            .listRowBackground(Color(white: 1, opacity: 0.4))
+                    }.onAppear{
+                        name = ms.name
+                        detail = ms.detail
+                    }
+                }else{
+                    Section{
+                        VStack(alignment: .leading){
                             HStack{
+                                Text("Detail:")
+                                    .bold()
                                 Spacer()
-                                let progressText = String(format: "%.0f%%", progress * 100)
-                                Text(progressText)
+                                Text(type[ms.status])
+                                    .foregroundStyle(color[ms.status])
                                     .bold()
                             }
-                        }
-                        .padding(.bottom, 5)
-                         
-                        
-                    }.listRowBackground(Color(white: 1, opacity: 0.4))
+                            
+                            Text(ms.detail)
+                            
+                            Text("Progress:")
+                                .bold()
+                            let progress = Double(Double(iscompleted)/Double(max(total,1)))
+                            VStack{
+                                ProgressView(value: progress)
+                                    .tint(.purple)
+                                HStack{
+                                    Spacer()
+                                    let progressText = String(format: "%.0f%%", progress * 100)
+                                    Text(progressText)
+                                        .bold()
+                                }
+                            }
+                            .padding(.bottom, 5)
+                            
+                            
+                        }.listRowBackground(Color(white: 1, opacity: 0.4))
+                    }
                 }
                 Section{
                     HStack{
@@ -84,16 +103,47 @@ struct Detail: View {
                 }.listRowBackground(Color(white: 1, opacity: 0.4))
             }
             .toolbar{
-                ToolbarItem(placement: .topBarTrailing){
-                    Button(action: {
-                        dismiss()
-                    }){
-                        Image(systemName: "xmark.circle.fill")
-                            .foregroundStyle(.black.opacity(0.4))
+                if edit{
+                    ToolbarItem(placement: .topBarTrailing){
+                        Button(action: {
+                            update()
+                        }){
+                            Text("Done")
+                                .foregroundStyle(name.isEmpty ? .black.opacity(0.5) : .black)
+                                .bold()
+                        }.disabled(name.isEmpty)
+                    }
+                }else{
+                    ToolbarItem(placement: .topBarTrailing){
+                        Button(action: {
+                            dismiss()
+                        }){
+                            Image(systemName: "xmark.circle.fill")
+                                .foregroundStyle(.black.opacity(0.4))
+                        }
+                    }
+                }
+                if edit{
+                    ToolbarItem(placement: .topBarLeading){
+                        Button(action: {
+                            edit.toggle()
+                        }){
+                           Text("Cancel")
+                        }
+                    }
+                    
+                }else{
+                    ToolbarItem(placement: .topBarLeading){
+                        Button(action: {
+                            edit.toggle()
+                        }){
+                            Text("Edit")
+                        }
                     }
                 }
             }
-            .navigationTitle(ms.name)
+            .navigationTitle(edit ? "Edit" : ms.name)
+            
             .alert("\(task) already existed", isPresented: $shownotice){
                 Button("OK", role: .cancel) {}
             }
@@ -107,6 +157,11 @@ struct Detail: View {
             ms.tasks.append(newtask)
             task = ""
         }
+    }
+    func update(){
+        ms.name = name
+        ms.detail = detail
+        edit.toggle()
     }
 }
 
@@ -123,3 +178,4 @@ struct TasksRow: View {
         }.foregroundStyle(.black)
     }
 }
+

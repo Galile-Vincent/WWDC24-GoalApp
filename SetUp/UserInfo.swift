@@ -54,7 +54,6 @@ struct UserInfo: View {
                     .bold()
                 HStack{
                     TextField("Quote", text: $quote)
-                        .textFieldStyle(.roundedBorder)
                     Button(action:{
                         quotes.append(Quote(quote: quote))
                         quote = ""
@@ -63,6 +62,11 @@ struct UserInfo: View {
                             .bold()
                     }.disabled(quote.isEmpty)
                 }
+                    .padding(25)
+                    .background(
+                        RoundedRectangle(cornerRadius: 20, style: .continuous)
+                            .stroke(Color.black, lineWidth: 3)
+                    ).padding(.horizontal)
                 Button(action:{
                     if !defaultQuotesAdded {
                         for defaultQuote in defaultquotes {
@@ -74,12 +78,14 @@ struct UserInfo: View {
                     Text("Add default quotes?")
                         .font(.caption)
                         .bold()
+                        .padding(.horizontal)
                 }
                 List {
                     ForEach(quotes) { quote in
                         Text(quote.quote)
-                            .listRowBackground(Color.black.opacity(0.4))
-                    }
+                            .listRowBackground(Color(.systemGray3))
+                           
+                    }.onDelete(perform: deleteQuote)
                 }
                     .focused($isInputActive)
                     .toolbar {
@@ -122,6 +128,8 @@ struct UserInfo: View {
         let newUser = UserData(username: username, quotes: quoteStrings)
         context.insert(newUser)
     }
-    
+    func deleteQuote(at offsets: IndexSet) {
+            quotes.remove(atOffsets: offsets)
+        }
     
 }

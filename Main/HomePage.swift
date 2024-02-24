@@ -149,6 +149,7 @@ struct GoalPage: View {
                     .presentationBackground(.thinMaterial)
             }
             .navigationBarBackButtonHidden(true)
+            .navigationBarTitleDisplayMode(.large)
         }
     }
     func onDeleteGoal() {

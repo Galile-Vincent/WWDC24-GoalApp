@@ -11,8 +11,6 @@ struct HomePageEmpty: View {
     @State var user: UserData
     var body: some View {
         VStack(alignment: .center){
-            QuoteView(user: user)
-                .listRowBackground(Color.black.opacity(0.2))
             Spacer()
             Image("logo")
                 .resizable()
