@@ -9,7 +9,7 @@ struct MyApp: App {
             ContentView()
                 .modelContainer(for: [UserData.self, MileStone.self, GoalData.self, Tasks.self], isAutosaveEnabled: true)
                 .environmentObject(Login())
-                .task {
+                .task{
                     try? Tips.configure([
                         .displayFrequency(.immediate),
                         .datastoreLocation(.applicationDefault)

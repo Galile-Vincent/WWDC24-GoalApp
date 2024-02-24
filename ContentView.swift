@@ -1,5 +1,6 @@
 import SwiftUI
 import SwiftData
+import TipKit
 
 struct ContentView: View {
     @AppStorage ("isOnBoarding") var isOnBoarding: Bool = true
@@ -45,3 +46,4 @@ struct OnBoardingView: View {
         }
     }
 }
+

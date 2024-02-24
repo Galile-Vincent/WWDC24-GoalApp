@@ -28,4 +28,5 @@ struct addgoal: Tip{
 
         @Parameter
         static var hasViewedGetStartedTip: Bool = false
+    
 }

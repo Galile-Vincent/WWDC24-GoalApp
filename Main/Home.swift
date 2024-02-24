@@ -7,12 +7,14 @@
 
 import SwiftUI
 import SwiftData
+import TipKit
 
 struct Home: View {
     @State var user: UserData
     @State var showadd: Bool = false
     @State var showedit: Bool = false
     @State private var refreshFlag = UUID()
+    private let tip = addgoal()
     var body: some View {
         
         ZStack(alignment: .bottom){
@@ -56,7 +58,10 @@ struct Home: View {
                                 .bold()
                         }
                         
-                    }.popoverTip(addgoal(), arrowEdge:.top)
+                    }.popoverTip(tip, arrowEdge: .top)
+                        .onTapGesture {
+                          tip.invalidate(reason: .actionPerformed)
+                        }
                     Spacer()
                 }/*
                   .background(

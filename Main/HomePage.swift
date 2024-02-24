@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import TipKit
 
 struct GoalPage: View {
     @EnvironmentObject var login: Login
@@ -18,6 +19,7 @@ struct GoalPage: View {
     @State var steps: String = ""
     @State var goalname: String = ""
     @State var goaldescribe: String = ""
+    private let tip = addmstip()
     var body: some View {
         NavigationStack{
             List{
@@ -132,7 +134,11 @@ struct GoalPage: View {
                                 .font(.system(.body, design: .rounded))
                         }.foregroundStyle(.purple)
                             .bold()
-                    }.popoverTip(addmstip(), arrowEdge:.top)
+                    }
+                    .popoverTip(tip, arrowEdge:.top)
+                    .onTapGesture {
+                        tip.invalidate(reason: .actionPerformed)
+                    }
                     Spacer()
                 }
             }
