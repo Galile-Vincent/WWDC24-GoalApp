@@ -23,12 +23,15 @@ struct GoalEdit: View {
                 Section{
                     TextField("Name", text: $goalname)
                         .listRowBackground(Color(white: 1, opacity: 0.4))
+                        .submitLabel(.done)
                 }header: {
                     Text("Goal Name")
                 }
                 Section{
                     TextField("Detail", text: $goaldescribe)
+                        .multilineTextAlignment(.leading)
                         .listRowBackground(Color(white: 1, opacity: 0.4))
+                        .submitLabel(.done)
                 }header: {
                     Text("Goal Detail")
                 }

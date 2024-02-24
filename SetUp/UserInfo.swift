@@ -33,6 +33,7 @@ struct UserInfo: View {
                 VStack(alignment: .leading){
                     TextField("Name", text: $username)
                         .textFieldStyle(CustomTextFieldStyle())
+                        .submitLabel(.done)
                     if NotCompleted{
                         HStack{
                             Image(systemName: "exclamationmark.circle.fill")
@@ -54,6 +55,7 @@ struct UserInfo: View {
                     .bold()
                 HStack{
                     TextField("Quote", text: $quote)
+                        .submitLabel(.done)
                     Button(action:{
                         quotes.append(Quote(quote: quote))
                         quote = ""
@@ -87,41 +89,26 @@ struct UserInfo: View {
                            
                     }.onDelete(perform: deleteQuote)
                 }
-                    .focused($isInputActive)
-                    .toolbar {
-                        ToolbarItemGroup(placement: .keyboard) {
-                            Spacer()
-                            
-                            Button("Done") {
-                                isInputActive = false
-                            }
-                        }
-                    }
-                    .onTapGesture {
-                        hideKeyboard()
-                    }
             }
             Spacer()
-            ZStack{
-                Button(action: {
-                    if !username.isEmpty{
-                        saveUser()
-                        isOnBoarding = false
-                    }else{
-                        NotCompleted = true
-                    }
-                }){
-                    Text("Next")
-                        .frame(width: 150, height: 50) // Set the frame to create a square button
-                        .background(Color.black)
-                        .foregroundColor(.white)
-                        .cornerRadius(10)
-                        .padding(.bottom,50)
+            VStack{
+                Text("Next")
+                    .frame(width: 150, height: 50) // Set the frame to create a square button
+                    .background(Color.black)
+                    .foregroundColor(.white)
+                    .cornerRadius(10)
+                    .padding(.bottom,25)
+            }.onTapGesture {
+                if !username.isEmpty{
+                    saveUser()
+                    isOnBoarding = false
+                }else{
+                    NotCompleted = true
                 }
             }
-            
         }.padding()
             .scrollContentBackground(.hidden)
+            .ignoresSafeArea(.keyboard)
     }
     func saveUser() {
         let quoteStrings = quotes.map { $0.quote } // Extract quotes from Quote struct and convert them to strings
