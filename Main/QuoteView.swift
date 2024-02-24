@@ -12,7 +12,7 @@ struct QuoteView: View {
     @State var user: UserData
     @State private var currentIndex = 0
     var body: some View {
-        if currentIndex == 0{
+        if user.quotes.count == 0{
             
         }else{
             Text("\"\(user.quotes[currentIndex])\"")
